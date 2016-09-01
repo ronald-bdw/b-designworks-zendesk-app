@@ -1,0 +1,17 @@
+<h3>Fitness Activity</h3>
+
+<table class="activities-table">
+  <thead>
+    <th>Date</th>
+    <th>Steps</th>
+  </thead>
+  <tbody>
+    {{#each activities}}
+      <tr>
+        <td>{{date}}</td>
+        <td>{{steps}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+
