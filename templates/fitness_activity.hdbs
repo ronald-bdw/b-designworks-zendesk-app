@@ -9,7 +9,7 @@
     {{#each activities}}
       <tr>
         <td>{{date}}</td>
-        <td>{{steps}}</td>
+        <td>{{steps_count}}</td>
       </tr>
     {{/each}}
   </tbody>
