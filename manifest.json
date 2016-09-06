@@ -13,12 +13,14 @@
   "parameters": [
     {
       "name": "pear_up_api_token",
-      "required": true
+      "required": true,
+      "type": "text"
     },
     {
       "name": "host",
       "default": "https://b-designworks.herokuapp.com/v1",
-      "required": true
+      "required": true,
+      "type": "url"
     }
   ]
 }
