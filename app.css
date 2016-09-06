@@ -11,3 +11,8 @@
 .activities-table th {
   border: 1px solid black;
 }
+
+.error {
+  color: red;
+  text-align: center;
+}
