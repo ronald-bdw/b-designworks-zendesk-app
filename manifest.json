@@ -9,5 +9,16 @@
   "private": true,
   "location":  ["ticket_sidebar"],
   "version": "1.0",
-  "frameworkVersion": "1.0"
+  "frameworkVersion": "1.0",
+  "parameters": [
+    {
+      "name": "pear_up_api_token",
+      "required": true
+    },
+    {
+      "name": "host",
+      "default": "https://b-designworks.herokuapp.com/v1",
+      "required": true
+    }
+  ]
 }
