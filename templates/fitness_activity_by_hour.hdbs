@@ -1,8 +1,8 @@
-<h3>Fitness Activity</h3>
+<div class="btn show-by-day">&lsaquo; Back</div>
 
-<table class="activities-table">
+<table class="table">
   <thead>
-    <th>Date</th>
+    <th>Hour</th>
     <th>Steps</th>
   </thead>
   <tbody>

@@ -1,18 +1,3 @@
-.activities-table {
-  width: 100%;
-  text-align: center;
-  margin: 10px 0 0 0;
-}
-
-.activities-table td {
-  border: 1px solid black;
-}
-
-.activities-table th {
-  border: 1px solid black;
-}
-
-.error {
-  color: red;
-  text-align: center;
+.table .show-by-hour:hover {
+  cursor: pointer;
 }
