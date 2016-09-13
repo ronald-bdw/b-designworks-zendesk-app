@@ -1,0 +1,15 @@
+<table class="table">
+  <thead>
+    <th>Date</th>
+    <th>Steps</th>
+  </thead>
+  <tbody>
+    {{#each activities}}
+      <tr>
+        <td class='show-by-hour'>{{date}}</td>
+        <td>{{steps_count}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+
