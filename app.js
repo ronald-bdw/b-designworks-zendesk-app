@@ -20,7 +20,7 @@
           type: 'GET',
           dataType: 'json',
           headers: { 'X-Auth-Token': settings.pear_up_api_token },
-          data: { 'zendesk_id': ticket.requester().id(), period: period, date: date }
+          data: { 'zendesk_id': ticket.requester().id(), period: period, date: date, count: 7 }
         };
       }
     },
