@@ -6,7 +6,9 @@
   <tbody>
     {{#each activities}}
       <tr>
-        <td class='show-by-hour'>{{date}}</td>
+        <td {{#if steps_count}} class='show-by-hour' {{/if}}>
+          {{date}}
+        </td>
         <td>{{steps_count}}</td>
       </tr>
     {{/each}}
