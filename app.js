@@ -14,8 +14,12 @@
         this.showFitnessActivity({ period: 'day', count: 7 });
       },
 
-      '*.changed': function(e) {
-        this.updateUser(e.propertyName.split('.'), e.newValue);
+      'user.email.changed': function() {
+        this.updateUser("email");
+      },
+
+      'user.name.changed': function() {
+        this.updateUser("name");
       }
     },
 
@@ -41,21 +45,16 @@
       }
     },
 
-    updateUser: function([model, property], value) {
-      if(model !== 'user' && !this._.contains(["name", "email"], property)) return;
-
+    updateUser: function(property) {
       var params = { userId: this.user().id(), data: { user: {} } };
-      params.data.user[property] = value;
-
+      params.data.user[property] = this.user()[property];
 
       this.ajax('updateUser', params).done(function(){
-        var message = "The user's " + property + " was successfully synchronized."
+        var message = "The user's " + property + " was successfully synchronized.";
 
-        this.switchTo("success_message", { message: message })
+        this.switchTo("success_message", { message: message });
       }).fail(function(data){
-        var message = "Can't synchronize user's " + property + ". Please check its value."
-
-        this.switchTo("error_message", { message: this.parseError(data, property) })
+        this.switchTo("error_message", { message: this.parseError(property) });
       });
     },
 
@@ -85,10 +84,9 @@
       }
     },
 
-    parseError: function(data, property) {
-      var baseMessage = "Can't synchronize user's " + property + ". "
-
-      var addMessage = { name: "Please use client's first and last name" }[property]
+    parseError: function(property) {
+      var baseMessage = "Can't synchronize user's " + property + ". ";
+      var addMessage = { name: "Please use client's first and last name" }[property];
 
       return baseMessage + addMessage;
     }
