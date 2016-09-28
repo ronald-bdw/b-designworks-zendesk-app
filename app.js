@@ -24,20 +24,20 @@
     },
 
     requests: {
-      fetchActivities: function(ticket, period, date, count) {
+      fetchActivities: function(params) {
         return {
           url: this.setting('host') + '/activities',
           type: 'GET',
           dataType: 'json',
           headers: { 'X-Auth-Token': this.setting('pear_up_api_token') },
-          data: { 'zendesk_id': ticket.requester().id(), period: period, date: date, count: count }
+          data: params
         };
       },
 
       updateUser: function(params) {
         return {
           url: this.setting('host') + '/zendesk/users/' + params.userId,
-          type: 'PATCH',
+          type: 'PUT',
           dataType: 'json',
           headers: { 'X-Auth-Token': this.setting('pear_up_api_token') },
           data: params.data
@@ -61,7 +61,9 @@
     showFitnessActivity: function(params) {
       if(this.ticket === undefined) return;
 
-      this.ajax('fetchActivities', this.ticket(), params.period, params.date, params.count).done(function(data) {
+      params.zendesk_id = this.ticket().requester().id();
+
+      this.ajax('fetchActivities', params).done(function(data) {
         var self = this;
 
         var activities = _.map(data, function(activity){
