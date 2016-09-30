@@ -10,11 +10,13 @@
   "location":  ["ticket_sidebar", "user_sidebar"],
   "version": "1.0",
   "frameworkVersion": "1.0",
+  "domainWhitelist": ["b-designworks.herokuapp.com"],
   "parameters": [
     {
       "name": "pear_up_api_token",
       "required": true,
-      "type": "text"
+      "type": "text",
+      "secure": true
     },
     {
       "name": "host",
