@@ -22,15 +22,7 @@
         this.updateUser("name");
       },
 
-      'pane.activated': function() {
-        this.popover({ width: 300, height: 100 });
-
-        if(this.syncRequestIsSended) {
-          this.switchTo("success_message", { message: "Users will be synchronized" });
-        } else {
-          this.switchTo("synchronize_users");
-        }
-      },
+      'pane.activated': 'showSyncronizeButton',
 
       'click .synchronize-users': 'synchronizeUsers'
     },
@@ -105,6 +97,21 @@
       }).fail(function(data){
         this.switchTo('error_message', { message: "Something went wrong!" });
       });
+    },
+
+    showSyncronizeButton: function() {
+      this.popover({ width: 300, height: 100 });
+
+      if(this.currentUser().role() !== 'admin') {
+        this.switchTo('error_message', { message: "You don't have access to this feature!" });
+        return;
+      }
+
+      if(this.syncRequestIsSended) {
+        this.switchTo("success_message", { message: "Users will be synchronized" });
+      } else {
+        this.switchTo("synchronize_users");
+      }
     },
 
     formatDate: function(date, period) {
