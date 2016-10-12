@@ -34,7 +34,7 @@
           type: 'GET',
           dataType: 'json',
           secure: true,
-          headers: { 'X-Auth-Token': this.setting('pear_up_api_token') },
+          headers: { 'X-Auth-Token': '{{setting.pear_up_api_token}}' },
           data: params
         };
       },
@@ -45,7 +45,7 @@
           type: 'PUT',
           dataType: 'json',
           secure: true,
-          headers: { 'X-Auth-Token': this.setting('pear_up_api_token') },
+          headers: { 'X-Auth-Token': '{{setting.pear_up_api_token}}' },
           data: params.data
         };
       },
@@ -56,7 +56,7 @@
           type: 'POST',
           dataType: 'json',
           secure: true,
-          headers: { 'X-Auth-Token': this.setting('pear_up_api_token') },
+          headers: { 'X-Auth-Token': '{{setting.pear_up_api_token}}' },
           data: params.data
         };
       }
