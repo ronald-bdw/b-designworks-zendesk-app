@@ -1,3 +1,11 @@
 .table .show-by-hour:hover {
   cursor: pointer;
 }
+
+.synchronize-users {
+  line-height: normal !important;
+}
+
+.synchronize-button-container {
+  text-align: center;
+}

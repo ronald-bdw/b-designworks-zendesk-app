@@ -1,0 +1,5 @@
+<div class="synchronize-button-container">
+  <button class="btn synchronize-users">
+    Synchronize users!
+  </button>
+</div>

@@ -20,7 +20,11 @@
 
       'user.name.changed': function() {
         this.updateUser("name");
-      }
+      },
+
+      'pane.activated': 'showSyncronizeButton',
+
+      'click .synchronize-users': 'synchronizeUsers'
     },
 
     requests: {
@@ -42,7 +46,26 @@
           headers: { 'X-Auth-Token': this.setting('pear_up_api_token') },
           data: params.data
         };
+      },
+
+      synchronizeUsers: function(params) {
+        return {
+          url: this.setting('host') + '/zendesk/users/fetch',
+          type: 'POST',
+          dataType: 'json',
+          headers: { 'X-Auth-Token': this.setting('pear_up_api_token') },
+          data: params.data
+        };
       }
+    },
+
+    synchronizeUsers: function() {
+      var params = { data: { notify_email: this.currentUser().email() } };
+
+      this.ajax('synchronizeUsers', params).done(function() {
+        this.syncRequestIsSended = true;
+        this.switchTo("success_message", { message: "Users will be synchronized" });
+      });
     },
 
     updateUser: function(property) {
@@ -74,6 +97,21 @@
       }).fail(function(data){
         this.switchTo('error_message', { message: "Something went wrong!" });
       });
+    },
+
+    showSyncronizeButton: function() {
+      this.popover({ width: 300, height: 100 });
+
+      if(this.currentUser().role() !== 'admin') {
+        this.switchTo('error_message', { message: "You don't have access to this feature!" });
+        return;
+      }
+
+      if(this.syncRequestIsSended) {
+        this.switchTo("success_message", { message: "Users will be synchronized" });
+      } else {
+        this.switchTo("synchronize_users");
+      }
     },
 
     formatDate: function(date, period) {
