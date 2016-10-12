@@ -33,6 +33,7 @@
           url: this.setting('host') + '/activities',
           type: 'GET',
           dataType: 'json',
+          secure: true,
           headers: { 'X-Auth-Token': this.setting('pear_up_api_token') },
           data: params
         };
@@ -43,6 +44,7 @@
           url: this.setting('host') + '/zendesk/users/' + params.userId,
           type: 'PUT',
           dataType: 'json',
+          secure: true,
           headers: { 'X-Auth-Token': this.setting('pear_up_api_token') },
           data: params.data
         };
@@ -53,6 +55,7 @@
           url: this.setting('host') + '/zendesk/users/fetch',
           type: 'POST',
           dataType: 'json',
+          secure: true,
           headers: { 'X-Auth-Token': this.setting('pear_up_api_token') },
           data: params.data
         };
