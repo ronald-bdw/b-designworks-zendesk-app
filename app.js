@@ -78,9 +78,9 @@
       this.ajax('updateUser', params).done(function(){
         var message = "The user's " + property + " was successfully synchronized.";
 
-        this.switchTo("success_message", { message: message });
+        services.notify(message, "notice")
       }).fail(function(data){
-        this.switchTo("error_message", { message: this.parseError(property) });
+        services.notify(this.parseError(property), "error")
       });
     },
 
