@@ -2,9 +2,7 @@
 
   return {
     events: {
-      'app.activated': function() {
-        this.showFitnessActivity({ period: 'day', count: 7 });
-      },
+      'app.activated': 'renderPage',
 
       'click .show-by-hour': function(event) {
         this.showFitnessActivity({ period: 'hour', date: this.$(event.target).text() });
@@ -59,6 +57,24 @@
           headers: { 'X-Auth-Token': '{{setting.pear_up_api_token}}' },
           data: params.data
         };
+      },
+
+      getUser: function(params) {
+        return {
+          url: this.setting('host') + '/zendesk/users/' + params.userId,
+          type: 'GET',
+          dataType: 'json',
+          secure: true,
+          headers: { 'X-Auth-Token': '{{setting.pear_up_api_token}}' }
+        };
+      }
+    },
+
+    renderPage: function() {
+      if(this.ticket) {
+        this.showFitnessActivity({ period: 'day', count: 7 });
+      } else if(this.user) {
+        this.showUserDetails();
       }
     },
 
@@ -78,15 +94,13 @@
       this.ajax('updateUser', params).done(function(){
         var message = "The user's " + property + " was successfully synchronized.";
 
-        services.notify(message, "notice")
+        services.notify(message, "notice");
       }).fail(function(data){
-        services.notify(this.parseError(property), "error")
+        services.notify(this.parseError(property), "error");
       });
     },
 
     showFitnessActivity: function(params) {
-      if(this.ticket === undefined) return;
-
       params.zendesk_id = this.ticket().requester().id();
 
       this.ajax('fetchActivities', params).done(function(data) {
@@ -97,7 +111,17 @@
         });
 
         this.switchTo('fitness_activity_by_' + params.period, { activities: activities });
-      }).fail(function(data){
+      }).fail(function() {
+        this.switchTo('error_message', { message: "Something went wrong!" });
+      });
+    },
+
+    showUserDetails: function() {
+      var params = { userId: this.user().id() };
+
+      this.ajax('getUser', params).done(function(data) {
+        this.switchTo('user_details', { user: data.user });
+      }).fail(function() {
         this.switchTo('error_message', { message: "Something went wrong!" });
       });
     },
