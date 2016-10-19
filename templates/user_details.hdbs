@@ -1,0 +1,45 @@
+<h3>Integrations:</h3>
+
+<table class="table">
+  <thead>
+    <th>Service name</th>
+    <th>Status</th>
+  </thead>
+  <tbody>
+    {{#each user.integrations}}
+      <tr>
+        <td>{{name}}</td>
+        <td>
+          {{#if status}}
+             Enabled
+           {{else}}
+             Disabled
+           {{/if}}
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+<h3>Notifications:</h3>
+
+<table class="table">
+  <thead>
+    <th>Notification type</th>
+    <th>Status</th>
+  </thead>
+  <tbody>
+    {{#each user.notifications}}
+      <tr>
+        <td>{{name}}</td>
+        <td>
+          {{#if status}}
+             Enabled
+           {{else}}
+             Disabled
+           {{/if}}
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
