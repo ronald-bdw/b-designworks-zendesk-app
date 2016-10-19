@@ -6,9 +6,9 @@
     <th>Status</th>
   </thead>
   <tbody>
-    {{#each user.integrations }}
+    {{#each user.integrations}}
       <tr>
-        <td>{{ name }}</td>
+        <td>{{name}}</td>
         <td>
           {{#if status}}
              Enabled
@@ -29,9 +29,9 @@
     <th>Status</th>
   </thead>
   <tbody>
-    {{#each user.notifications }}
+    {{#each user.notifications}}
       <tr>
-        <td>{{ name }}</td>
+        <td>{{name}}</td>
         <td>
           {{#if status}}
              Enabled
