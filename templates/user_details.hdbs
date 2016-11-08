@@ -43,3 +43,5 @@
     {{/each}}
   </tbody>
 </table>
+
+<h3>Subscriptions {{#if user.subscription_status}} on {{else}} off {{/if}}</h3>
