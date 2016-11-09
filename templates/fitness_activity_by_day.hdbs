@@ -1,3 +1,10 @@
+<h3> Data has been pulled from: </h3>
+<br>
+<ul>
+  {{#each sourcesLists }}
+    <li class="btn show-by-source" data-source="{{type}}">{{title}}</li>
+  {{/each}}
+</ul>
 <table class="table">
   <thead>
     <th>Date</th>
@@ -6,7 +13,7 @@
   <tbody>
     {{#each activities}}
       <tr>
-        <td {{#if steps_count}} class="show-by-hour" {{/if}}>
+        <td {{#if steps_count}} class="show-by-hour" data-source="{{source}}" {{/if}}>
           {{date}}
         </td>
         <td>{{steps_count}}</td>
