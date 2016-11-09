@@ -5,11 +5,11 @@
       "app.activated": "renderPage",
 
       "click .show-by-hour": function(event) {
-        this.showFitnessActivity({ period: "hour", date: this.$(event.target).text() });
+        this.showFitnessActivity({ source: this.$(event.target).data("source"), period: "hour", date: this.$(event.target).text() });
       },
 
       "click .show-by-day": function() {
-        this.showFitnessActivity({ period: "day", count: 7 });
+        this.showFitnessActivity({ source: "fitbit", period: "day", count: 7 });
       },
 
       "user.email.changed": function() {
@@ -22,7 +22,11 @@
 
       "pane.activated": "showSyncronizeButton",
 
-      "click .synchronize-users": "synchronizeUsers"
+      "click .synchronize-users": "synchronizeUsers",
+
+      "click .show-by-source": function(event) {
+        this.showFitnessActivity({ source: this.$(event.target).data("source"), period: "day", count: 7 });
+      },
     },
 
     requests: {
@@ -72,7 +76,7 @@
 
     renderPage: function() {
       if(this.ticket) {
-        this.showFitnessActivity({ period: "day", count: 7 });
+        this.showFitnessActivity({ source: "fitbit", period: "day", count: 7 });
       } else if(this.user) {
         this.showUserDetails();
       }
@@ -106,11 +110,20 @@
       this.ajax("fetchActivities", params).done(function(data) {
         var self = this;
 
+        var sourcesLists = [
+          { title: "Fitbit", type: "fitbit" },
+          { title: "Googlefit", type: "googlefit" },
+          { title: "HealthKit", type: "healthkit" }
+        ];
+
         var activities = _.map(data, function(activity){
-          return { date: self.formatDate(activity.date, params.period), steps_count: activity.steps_count };
+          return { date: self.formatDate(activity.date, params.period), steps_count: activity.steps_count, source: params.source };
         });
 
-        this.switchTo("fitness_activity_by_" + params.period, { activities: activities });
+        this.switchTo("fitness_activity_by_" + params.period, { source: params.source, activities: activities, sourcesLists: sourcesLists });
+        if ( params.source ) {
+          this.$(".show-by-source[data-source=" + params.source + "]").addClass("active");
+        }
       }).fail(function() {
         this.switchTo("error_message", { message: "Something went wrong!" });
       });
