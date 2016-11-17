@@ -3,9 +3,7 @@
 }
 
 .synchronize-users {
+  border: 1px solid !important;
+  padding: 7px !important;
   line-height: normal !important;
-}
-
-.synchronize-button-container {
-  text-align: center;
 }
