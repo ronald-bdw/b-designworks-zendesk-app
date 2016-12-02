@@ -20,9 +20,15 @@
         this.updateUser("name");
       },
 
+      "submit #create_subscriber": "createNotificationSubscriber",
+
       "pane.activated": "showSyncronizeButton",
 
       "click .synchronize-users": "synchronizeUsers",
+
+      "click .unsubscribe-agent": function(event) {
+        this.unsubscribeAgent(this.$(event.target).data("agent"));
+      },
 
       "click .show-by-source": function(event) {
         this.showFitnessActivity({ source: this.$(event.target).data("source"), period: "day", count: 7 });
@@ -71,6 +77,37 @@
           secure: true,
           headers: { "X-Auth-Token": "{{ setting.pear_up_api_token }}" }
         };
+      },
+
+      getNotificationSubscribers: function() {
+        return {
+          url: this.setting("host") + "/zendesk/notification_subscribers",
+          type: "GET",
+          dataType: "json",
+          secure: true,
+          headers: { "X-Auth-Token": "{{ setting.pear_up_api_token }}" }
+        };
+      },
+
+      createNotificationSubscriber: function(params) {
+        return {
+          url: this.setting("host") + "/zendesk/notification_subscribers",
+          type: "POST",
+          dataType: "json",
+          secure: true,
+          headers: { "X-Auth-Token": "{{ setting.pear_up_api_token }}" },
+          data: params.data
+        };
+      },
+
+      unsubscribeAgent: function(params) {
+        return {
+          url: this.setting("host") + "/zendesk/notification_subscribers/" + params.agentId,
+          type: "DELETE",
+          dataType: "json",
+          secure: true,
+          headers: { "X-Auth-Token": "{{ setting.pear_up_api_token }}" }
+        };
       }
     },
 
@@ -82,12 +119,41 @@
       }
     },
 
+    unsubscribeAgent: function(agentId) {
+      var params = { agentId: agentId };
+
+      this.ajax("unsubscribeAgent", params).done(function() {
+        this.showSyncronizeButton();
+      }).fail(function() {
+        services.notify("Something went wrong!", "error");
+      });
+    },
+
+    createNotificationSubscriber: function(event) {
+      event.preventDefault();
+
+      var params = {
+        data: {
+          email: this.$("#subscriber_email").val(),
+          notification_types: ["first_user_login"]
+        }
+      };
+
+      this.ajax("createNotificationSubscriber", params).done(function(){
+        this.showSyncronizeButton();
+      }).fail(function(data){
+        console.log(data);
+        services.notify(data.responseJSON.errors, "error");
+      });
+    },
+
     synchronizeUsers: function() {
       var params = { data: { notify_email: this.currentUser().email() } };
 
       this.ajax("synchronizeUsers", params).done(function() {
-        this.syncRequestIsSended = true;
-        this.switchTo("success_message", { message: "Users will be synchronized" });
+        services.notify("Users will be synchronized", "notice");
+      }).fail(function(){
+        services.notify("Something went wrong!", "error");
       });
     },
 
@@ -140,18 +206,14 @@
     },
 
     showSyncronizeButton: function() {
-      this.popover({ width: 300, height: 100 });
-
       if(this.currentUser().role() !== "admin") {
         this.switchTo("error_message", { message: "You don't have access to this feature!" });
         return;
       }
 
-      if(this.syncRequestIsSended) {
-        this.switchTo("success_message", { message: "Users will be synchronized" });
-      } else {
-        this.switchTo("synchronize_users");
-      }
+      this.ajax("getNotificationSubscribers").done(function(data) {
+        this.switchTo("synchronize_users", { subscribers: data.notification_subscribers });
+      });
     },
 
     formatDate: function(date, period) {

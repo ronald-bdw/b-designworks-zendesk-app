@@ -1,7 +1,31 @@
 <div class="row">
-  <div class="span4 offset1">
-    <button class="btn synchronize-users">
-      Synchronize users!
-    </button>
+  <div class="span6">
+    <legend>Syncronize users with PairUp:</legend>
+
+    <button class="btn synchronize-users">Synchronize users!</button>
+  </div>
+
+  <div class="span6">
+    <legend>Subscribe to users' notifications:</legend>
+
+    <form class="form-inline" id="create_subscriber">
+      <input type="text" placeholder="Email" id="subscriber_email">
+      <button type="submit" class="btn">Subscribe to notifications</button>
+    </form>
+
+    <br>
+
+    {{#if subscribers}}
+      <table class="table table-bordered">
+        {{#each subscribers}}
+          <tr>
+            <td>{{email}}</td>
+            <td>
+              <button type="submit" class="btn unsubscribe-agent" data-agent="{{id}}">Unsubscribe</button>
+            </td>
+          </tr>
+        {{/each}}
+      </table>
+    {{/if}}
   </div>
 </div>
