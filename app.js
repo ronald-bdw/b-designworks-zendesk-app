@@ -135,7 +135,7 @@
       var params = {
         data: {
           email: this.$("#subscriber_email").val(),
-          notification_types: ["first_user_login"]
+          notification_types: ["first_user_login", "registration_complete"]
         }
       };
 
