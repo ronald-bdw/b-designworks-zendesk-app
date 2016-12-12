@@ -10,7 +10,7 @@
   "location":  ["ticket_sidebar", "user_sidebar", "nav_bar"],
   "version": "1.0",
   "frameworkVersion": "1.0",
-  "domainWhitelist": ["b-designworks.herokuapp.com", "pairup-api.herokuapp.com"],
+  "domainWhitelist": ["b-designworks.herokuapp.com", "pairup-api.herokuapp.com", "api.pairup.im"],
   "parameters": [
     {
       "name": "pear_up_api_token",
