@@ -171,7 +171,10 @@
     },
 
     showFitnessActivity: function(params) {
-      params.zendesk_id = this.ticket().requester().id();
+      var user = this.ticket().requester();
+
+      params.zendesk_id = user.id();
+      params.timezone = user.timeZone().name();
 
       this.ajax("fetchActivities", params).done(function(data) {
         var self = this;
