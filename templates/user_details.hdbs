@@ -44,4 +44,26 @@
   </tbody>
 </table>
 
-<h3>Subscriptions {{#if user.subscription_status}} on {{else}} off {{/if}}</h3>
+{{#if user.subscription}}
+  <h3>Subscription:</h3>
+
+  <table class="table">
+    <thead>
+      <th>Plan name</th>
+      <th>Status</th>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td>{{user.subscription.plan_name}}</td>
+        <td>
+          {{#if user.subscription.status}}
+            Active
+          {{else}}
+            Inactive
+          {{/if}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+{{/if}}
