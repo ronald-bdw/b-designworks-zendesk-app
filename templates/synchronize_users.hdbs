@@ -6,6 +6,14 @@
   </div>
 
   <div class="span6">
+    <legend>Syncronize organizations with PairUp:</legend>
+
+    <button class="btn synchronize-organizations">Synchronize organizations!</button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="span12">
     <legend>Subscribe to users' notifications:</legend>
 
     <form class="form-inline" id="create_subscriber">
