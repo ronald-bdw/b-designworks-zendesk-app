@@ -20,11 +20,16 @@
         this.updateUser("name");
       },
 
+      "organization.name.changed": function() {
+        this.updateOrganization("name");
+      },
+
       "submit #create_subscriber": "createNotificationSubscriber",
 
       "pane.activated": "showSyncronizeButton",
 
       "click .synchronize-users": "synchronizeUsers",
+      "click .synchronize-organizations": "synchronizeOrganizations",
 
       "click .unsubscribe-agent": function(event) {
         this.unsubscribeAgent(this.$(event.target).data("agent"));
@@ -58,9 +63,31 @@
         };
       },
 
+      updateOrganization: function(params) {
+        return {
+          url: this.setting("host") + "/zendesk/organizations/" + params.organizationId,
+          type: "PUT",
+          dataType: "json",
+          secure: true,
+          headers: { "X-Auth-Token": "{{setting.pear_up_api_token}}" },
+          data: params.data
+        };
+      },
+
       synchronizeUsers: function(params) {
         return {
           url: this.setting("host") + "/zendesk/users/fetch",
+          type: "POST",
+          dataType: "json",
+          secure: true,
+          headers: { "X-Auth-Token": "{{ setting.pear_up_api_token }}" },
+          data: params.data
+        };
+      },
+
+      synchronizeOrganizations: function(params) {
+        return {
+          url: this.setting("host") + "/zendesk/organizations/fetch",
           type: "POST",
           dataType: "json",
           secure: true,
@@ -157,12 +184,35 @@
       });
     },
 
+    synchronizeOrganizations: function() {
+      var params = { data: { notify_email: this.currentUser().email() } };
+
+      this.ajax("synchronizeOrganizations", params).done(function() {
+        services.notify("Organizations will be synchronized", "notice");
+      }).fail(function(){
+        services.notify("Something went wrong!", "error");
+      });
+    },
+
     updateUser: function(property) {
       var params = { userId: this.user().id(), data: { user: {} } };
       params.data.user[property] = this.user()[property];
 
       this.ajax("updateUser", params).done(function(){
         var message = "The user's " + property + " was successfully synchronized.";
+
+        services.notify(message, "notice");
+      }).fail(function(data){
+        services.notify(this.parseError(property), "error");
+      });
+    },
+
+    updateOrganization: function(property) {
+      var params = { organizationId: this.organization().id(), data: { provider: {} } };
+      params.data.organization[property] = this.organization()[property];
+
+      this.ajax("updateOrganization", params).done(function(){
+        var message = "The organization's " + property + " was successfully synchronized.";
 
         services.notify(message, "notice");
       }).fail(function(data){
