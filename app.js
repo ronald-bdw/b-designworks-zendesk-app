@@ -273,7 +273,7 @@
       var moment_date = moment(date);
 
       if (period === "hour") {
-        return moment_date.utc().format("LT");
+        return moment_date.format("LT");
       } else {
         return moment_date.format("LL");
       }
