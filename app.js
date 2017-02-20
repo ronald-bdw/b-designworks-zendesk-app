@@ -224,7 +224,7 @@
       var user = this.ticket().requester();
 
       params.zendesk_id = user.id();
-      params.timezone = user.timeZone().name();
+      params.timezone = user.timeZone().ianaName();
 
       this.ajax("fetchActivities", params).done(function(data) {
         var self = this;
@@ -236,7 +236,7 @@
         ];
 
         var activities = _.map(data, function(activity){
-          return { date: self.formatDate(activity.date, params.period), steps_count: activity.steps_count, source: params.source };
+          return { date: self.formatDate(activity.date, params.period, params.timezone), steps_count: activity.steps_count, source: params.source };
         });
 
         this.switchTo("fitness_activity_by_" + params.period, { source: params.source, activities: activities, sourcesLists: sourcesLists });
@@ -269,13 +269,13 @@
       });
     },
 
-    formatDate: function(date, period) {
+    formatDate: function(date, period, timezone) {
       var moment_date = moment(date);
 
       if (period === "hour") {
-        return moment_date.format("LT");
+        return moment_date.tz(timezone).format("D MMM, LT");
       } else {
-        return moment_date.format("LL");
+        return moment_date.tz(timezone).format("LL");
       }
     },
 
