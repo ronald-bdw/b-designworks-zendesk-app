@@ -20,8 +20,24 @@
         this.updateUser("name");
       },
 
+      "user.first_popup_active.changed": function() {
+        this.updateUser("first_popup_active");
+      },
+
+      "user.second_popup_active.changed": function() {
+        this.updateUser("second_popup_active");
+      },
+
       "organization.name.changed": function() {
         this.updateOrganization("name");
+      },
+
+      "organization.first_popup_message.changed": function() {
+        this.updateOrganization("first_popup_message");
+      },
+
+      "organization.second_popup_message.changed": function() {
+        this.updateOrganization("second_popup_message");
       },
 
       "submit #create_subscriber": "createNotificationSubscriber",
@@ -196,7 +212,10 @@
 
     updateUser: function(property) {
       var params = { userId: this.user().id(), data: { user: {} } };
-      params.data.user[property] = this.user()[property];
+      var user = this.user();
+      var userProperty = user[property] ? user[property] : user.customField(property);
+
+      params.data.user[property] = userProperty;
 
       this.ajax("updateUser", params).done(function(){
         var message = "The user's " + property + " was successfully synchronized.";
@@ -208,8 +227,11 @@
     },
 
     updateOrganization: function(property) {
-      var params = { organizationId: this.organization().id(), data: { provider: {} } };
-      params.data.organization[property] = this.organization()[property];
+      var params = { organizationId: this.organization().id(), data: { organization: {} } };
+      var organization = this.organization();
+      var organizationProperty = organization[property] ? organization[property] : organization.customField(property);
+
+      params.data.organization[property] = organizationProperty;
 
       this.ajax("updateOrganization", params).done(function(){
         var message = "The organization's " + property + " was successfully synchronized.";
