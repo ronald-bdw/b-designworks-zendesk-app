@@ -69,3 +69,26 @@
     </tbody>
   </table>
 {{/if}}
+
+<h3>Organizations:</h3>
+
+<table class="table">
+  <thead>
+    <th>Name</th>
+    <th>Status</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{user.provider_name}}</td>
+      <td>
+        Current
+      </td>
+    </tr>
+    <tr>
+      <td>{{user.previous_provider_name}}</td>
+      <td>
+        Previous
+      </td>
+    </tr>
+  </tbody>
+</table>
